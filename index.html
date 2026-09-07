@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Különleges meghívó Neked ❤️</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .serif-title {
+      font-family: 'Playfair Display', Georgia, serif;
+    }
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(2deg); }
+    }
+    .animate-float {
+      animation: floatSlow 3s ease-in-out infinite;
+    }
+    @keyframes pulseHeart {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+    }
+    .animate-pulse-heart {
+      animation: pulseHeart 1.4s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-[#faf8f6] flex items-center justify-center p-4 sm:p-6 overflow-hidden relative">
+
+  <!-- Háttér dekorációs elemek -->
+  <div class="absolute -top-24 -left-24 w-80 h-80 bg-rose-200/30 rounded-full blur-3xl pointer-events-none"></div>
+  <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-amber-100/50 rounded-full blur-3xl pointer-events-none"></div>
+
+  <!-- 1. KÉPERNYŐ: A kérdés és a menekülő gomb -->
+  <main id="invite-screen" class="relative z-10 w-full max-w-xl text-center flex flex-col items-center justify-center transition-all duration-500">
+    <span class="inline-flex items-center gap-1.5 px-4 py-1.5 mb-6 text-xs font-semibold tracking-widest text-stone-500 uppercase bg-white/80 backdrop-blur shadow-sm rounded-full border border-stone-200/70">
+      <span class="w-2 h-2 rounded-full bg-rose-400 animate-ping"></span>
+      • CSAK NEKED •
+    </span>
+
+    <div class="text-4xl mb-3 animate-float select-none">
+      💌
+    </div>
+
+    <h1 class="text-4xl sm:text-6xl font-extrabold text-[#742338] mb-4 tracking-tight leading-tight">
+      Eljönnél velem randizni?
+    </h1>
+
+    <p class="max-w-md text-stone-500 mb-10 text-sm sm:text-base leading-relaxed px-2">
+      Egy kérdés. Két gomb. Egyetlen esély arra, hogy valami csodás kezdődjön.
+    </p>
+
+    <!-- Gombok konténere -->
+    <div id="button-container" class="relative flex items-center justify-center gap-5 w-full min-h-[70px]">
+      <button
+        id="yes-btn"
+        type="button"
+        class="px-8 py-3.5 rounded-full bg-[#b83852] hover:bg-[#a12f46] text-white font-semibold text-base sm:text-lg shadow-lg shadow-rose-900/15 transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer flex items-center gap-2 z-10"
+      >
+        Igen <span class="animate-pulse-heart">❤️</span>
+      </button>
+
+      <button
+        id="no-btn"
+        type="button"
+        class="px-8 py-3.5 rounded-full bg-white hover:bg-stone-50 text-stone-600 font-medium text-base shadow-sm border border-stone-200 cursor-pointer transition-all duration-150 whitespace-nowrap"
+      >
+        Nem
+      </button>
+    </div>
+  </main>
+
+  <!-- 2. KÉPERNYŐ: Siker / Elfogadás -->
+  <main id="success-screen" class="hidden relative z-10 w-full max-w-xl text-center flex flex-col items-center justify-center transition-all duration-500 opacity-0 transform scale-95">
+    <div class="text-3xl sm:text-4xl mb-6 tracking-widest select-none animate-bounce">
+      🤍 ❤️ 🥂 ❤️ 🤍
+    </div>
+
+    <h1 class="text-3xl sm:text-5xl font-black text-stone-900 tracking-tight leading-tight mb-4 px-4">
+      Úristen, igent mondtál! Ezt nem hiszem el... 💖
+    </h1>
+
+    <p class="text-stone-600 mb-8 max-w-md text-base sm:text-lg px-4">
+      A nap legjobb híre! Már most nagyon várom. Mikor lenne neked a legszuperebb?
+    </p>
+
+    <!-- Időpont-egyeztető kártya -->
+    <div id="date-card" class="w-full max-w-md bg-white/95 backdrop-blur p-5 sm:p-6 rounded-3xl shadow-xl shadow-stone-200/50 border border-stone-200/80 transition-all duration-300">
+      <div id="date-input-section" class="flex flex-col gap-3">
+        <label for="date-picker" class="text-xs font-semibold uppercase tracking-wider text-stone-400 text-left">
+          Válassz egy lehetséges időpontot:
+        </label>
+        <div class="flex flex-col sm:flex-row gap-2">
+          <input
+            type="datetime-local"
+            id="date-picker"
+            class="flex-1 px-4 py-3 rounded-2xl text-stone-800 bg-stone-50 border border-stone-200 focus:outline-none focus:ring-2 focus:ring-rose-400 text-sm font-medium"
+          />
+          <button
+            id="save-date-btn"
+            type="button"
+            class="px-6 py-3 rounded-2xl bg-[#b83852] hover:bg-[#a12f46] text-white font-semibold text-sm transition-all shadow-md shadow-rose-900/10 cursor-pointer"
+          >
+            Mentés 💌
+          </button>
+        </div>
+      </div>
+
+      <div id="date-confirmed-section" class="hidden flex-col items-center gap-2 py-3 text-rose-900">
+        <div class="text-3xl">🎉</div>
+        <p class="font-bold text-lg">Már be is írtam a naptárba!</p>
+        <p class="text-sm text-stone-600">
+          Megbeszélt időpont: <span id="chosen-date-display" class="font-semibold text-stone-900"></span>
+        </p>
+        <button 
+          id="change-date-btn"
+          type="button"
+          class="mt-3 text-xs text-stone-400 hover:text-stone-600 underline cursor-pointer"
+        >
+          Időpont módosítása
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const noBtn = document.getElementById('no-btn');
+    const yesBtn = document.getElementById('yes-btn');
+    const inviteScreen = document.getElementById('invite-screen');
+    const successScreen = document.getElementById('success-screen');
+
+    const datePicker = document.getElementById('date-picker');
+    const saveDateBtn = document.getElementById('save-date-btn');
+    const dateInputSection = document.getElementById('date-input-section');
+    const dateConfirmedSection = document.getElementById('date-confirmed-section');
+    const chosenDateDisplay = document.getElementById('chosen-date-display');
+    const changeDateBtn = document.getElementById('change-date-btn');
+
+    // Alapértelmezett holnapi dátum a választóba
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(18, 0, 0, 0);
+    datePicker.value = tomorrow.toISOString().slice(0, 16);
+
+    const NO_BUTTON_TEXTS = [
+      "Nem",
+      "Biztos vagy benne?",
+      "Gondold át még egyszer!",
+      "Na ne csináld... 🥺",
+      "Nincs ilyen opció! 😉",
+      "Próbáld a másikat! 👉",
+      "Nem ér a 'Nem'! 😂",
+      "Kérlek? ❤️",
+      "Még mindig a bal gomb a nyerő!",
+      "Nem adom fel! 🥰"
+    ];
+
+    let noAttempts = 0;
+
+    function moveNoButton(e) {
+      if (e) {
+        e.preventDefault();
+      }
+
+      noAttempts++;
+
+      // Frissítjük a Nem gomb feliratát
+      const textIndex = noAttempts % NO_BUTTON_TEXTS.length;
+      noBtn.innerText = NO_BUTTON_TEXTS[textIndex];
+
+      // Az Igen gomb egyre nagyobb lesz
+      const newScale = Math.min(1 + noAttempts * 0.08, 1.6);
+      yesBtn.style.transform = `scale(${newScale})`;
+
+      // Margók a képernyő széleihez
+      const padding = 30;
+      const rect = noBtn.getBoundingClientRect();
+      const buttonWidth = rect.width || 120;
+      const buttonHeight = rect.height || 50;
+
+      const maxX = window.innerWidth - buttonWidth - padding;
+      const maxY = window.innerHeight - buttonHeight - padding;
+
+      const randomX = Math.max(padding, Math.floor(Math.random() * (maxX - padding)) + padding);
+      const randomY = Math.max(padding, Math.floor(Math.random() * (maxY - padding)) + padding);
+
+      noBtn.style.position = 'fixed';
+      noBtn.style.top = `${randomY}px`;
+      noBtn.style.left = `${randomX}px`;
+      noBtn.style.zIndex = '999';
+      noBtn.style.transition = 'top 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), left 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)';
+    }
+
+    // Eseménykezelők a meneküléshez egérre és érintésre is
+    noBtn.addEventListener('mouseenter', moveNoButton);
+    noBtn.addEventListener('touchstart', moveNoButton, { passive: false });
+    noBtn.addEventListener('click', moveNoButton);
+
+    // Konfetti animáció indítása
+    function launchConfetti() {
+      if (typeof confetti === 'function') {
+        // 1. Első nagy robbanás a középpontból
+        confetti({
+          particleCount: 100,
+          spread: 80,
+          origin: { y: 0.6 },
+          colors: ['#b83852', '#ff6b8b', '#ffd166', '#06d6a0', '#118ab2', '#e63946']
+        });
+
+        // 2. Kétoldali folyamatos ágyúk
+        const duration = 3000;
+        const animationEnd = Date.now() + duration;
+
+        const interval = setInterval(function() {
+          const timeLeft = animationEnd - Date.now();
+
+          if (timeLeft <= 0) {
+            return clearInterval(interval);
+          }
+
+          const particleCount = 40 * (timeLeft / duration);
+
+          // Bal oldalról
+          confetti({
+            particleCount,
+            angle: 60,
+            spread: 55,
+            origin: { x: 0, y: 0.7 },
+            colors: ['#b83852', '#ff4d6d', '#ff758f', '#ffb3c1']
+          });
+          // Jobb oldalról
+          confetti({
+            particleCount,
+            angle: 120,
+            spread: 55,
+            origin: { x: 1, y: 0.7 },
+            colors: ['#b83852', '#ff4d6d', '#ff758f', '#ffb3c1']
+          });
+        }, 250);
+      }
+    }
+
+    // "Igen" gomb kattintás
+    yesBtn.addEventListener('click', () => {
+      launchConfetti();
+
+      // Átmenet a 2. képernyőre
+      inviteScreen.classList.add('opacity-0', 'scale-95');
+      setTimeout(() => {
+        inviteScreen.classList.add('hidden');
+        successScreen.classList.remove('hidden');
+
+        // Kis késleltetés a sima animációért
+        setTimeout(() => {
+          successScreen.classList.remove('opacity-0', 'scale-95');
+          successScreen.classList.add('opacity-100', 'scale-100');
+        }, 50);
+      }, 400);
+    });
+
+    // Időpont mentése
+    saveDateBtn.addEventListener('click', () => {
+      const value = datePicker.value;
+      if (!value) return;
+
+      const dateObj = new Date(value);
+      const formatted = dateObj.toLocaleString('hu-HU', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        weekday: 'long',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+
+      chosenDateDisplay.innerText = formatted;
+      dateInputSection.classList.add('hidden');
+      dateConfirmedSection.classList.remove('hidden');
+      dateConfirmedSection.classList.add('flex');
+
+      // Extra kis konfetti burst a megerősítésnél
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 50,
+          spread: 60,
+          origin: { y: 0.75 }
+        });
+      }
+    });
+
+    // Időpont módosítása gomb
+    changeDateBtn.addEventListener('click', () => {
+      dateConfirmedSection.classList.add('hidden');
+      dateConfirmedSection.classList.remove('flex');
+      dateInputSection.classList.remove('hidden');
+    });
+  </script>
+</body>
+</html>
