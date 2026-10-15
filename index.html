@@ -107,7 +107,7 @@
       <div id="date-input-section" class="flex flex-col gap-3">
         <label for="date-picker" class="text-xs font-semibold uppercase tracking-wider text-stone-400 text-left flex justify-between items-center">
           <span>Válassz egy időpontot:</span>
-          <span class="text-stone-400/80 font-normal lowercase tracking-normal">(max. 3 hét)</span>
+          <span class="text-stone-400/80 font-normal lowercase tracking-normal">(minél előbb, annál jobb 😉)</span>
         </label>
         <div class="flex flex-col sm:flex-row gap-2">
           <input
@@ -177,10 +177,10 @@
 
     // Min és Max korlátok:
     // Min: jelenlegi időpont (visszafelé nem lehet menni)
-    // Max: maximum 3 hét előre (21 nap)
+    // Max: 6 hét előre (42 napig engedi a naptárat böngészni)
     function updateDateLimits() {
       const now = new Date();
-      const maxDate = new Date(now.getTime() + 21 * 24 * 60 * 60 * 1000);
+      const maxDate = new Date(now.getTime() + 42 * 24 * 60 * 60 * 1000);
 
       datePicker.min = formatToLocalISO(now);
       datePicker.max = formatToLocalISO(maxDate);
@@ -213,7 +213,8 @@
       datePicker.classList.remove('border-rose-400', 'ring-2', 'ring-rose-200');
     }
 
-    // Dátum ellenőrzése
+    // Dátum ellenőrzése:
+    // 3 hét = 21 nap (ezen túl figyelmeztetést kap: "nem tudok rád ennyit várni")
     function validateDateSelection() {
       if (!datePicker.value) {
         showDateWarning("Kérlek válassz egy időpontot! 😊", "📅");
@@ -222,7 +223,7 @@
 
       const selected = new Date(datePicker.value);
       const now = new Date();
-      const maxLimit = new Date(now.getTime() + 21 * 24 * 60 * 60 * 1000);
+      const threeWeeksLimit = new Date(now.getTime() + 21 * 24 * 60 * 60 * 1000);
 
       // Múltbeli dátum ellenőrzése
       if (selected < now) {
@@ -230,8 +231,8 @@
         return false;
       }
 
-      // 3 hétnél későbbi dátum ellenőrzése
-      if (selected > maxLimit) {
+      // 3 hétnél későbbi dátum ellenőrzése (3 és 6 hét között is!)
+      if (selected > threeWeeksLimit) {
         showDateWarning("Ne csináld már, ennyit nem tudok rád várni! 🥺❤️", "🥺");
         return false;
       }
