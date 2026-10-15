@@ -175,14 +175,13 @@
       return `${yyyy}-${MM}-${dd}T${hh}:${mm}`;
     }
 
-    // Min és Max korlátok:
-    // Min: jelenlegi időpont (visszafelé nem lehet menni)
-    // Max: 6 hét előre (42 napig engedi a naptárat böngészni)
+    // Naptár beállításai:
+    // Max: 6 hét előre engedi a naptárat böngészni
+    // A múltba engedjük a kiválasztást, hogy megjelenhessen az aranyos figyelmeztetés!
     function updateDateLimits() {
       const now = new Date();
       const maxDate = new Date(now.getTime() + 42 * 24 * 60 * 60 * 1000);
 
-      datePicker.min = formatToLocalISO(now);
       datePicker.max = formatToLocalISO(maxDate);
 
       // Alapértelmezett: holnap 18:00
@@ -214,7 +213,8 @@
     }
 
     // Dátum ellenőrzése:
-    // 3 hét = 21 nap (ezen túl figyelmeztetést kap: "nem tudok rád ennyit várni")
+    // 1. Múltbeli dátum -> "Időutazni sajnos még nem tudok..."
+    // 2. 3 hétnél távolabbi dátum -> "Ne csináld már, ennyit nem tudok rád várni!"
     function validateDateSelection() {
       if (!datePicker.value) {
         showDateWarning("Kérlek válassz egy időpontot! 😊", "📅");
@@ -225,13 +225,13 @@
       const now = new Date();
       const threeWeeksLimit = new Date(now.getTime() + 21 * 24 * 60 * 60 * 1000);
 
-      // Múltbeli dátum ellenőrzése
+      // Múltbeli dátum ellenőrzése (ha visszafelé akarna menni)
       if (selected < now) {
         showDateWarning("Időutazni sajnos még nem tudok... válassz egy későbbi időpontot! 😉⏳", "⏳");
         return false;
       }
 
-      // 3 hétnél későbbi dátum ellenőrzése (3 és 6 hét között is!)
+      // 3 hétnél későbbi dátum ellenőrzése
       if (selected > threeWeeksLimit) {
         showDateWarning("Ne csináld már, ennyit nem tudok rád várni! 🥺❤️", "🥺");
         return false;
