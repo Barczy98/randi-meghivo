@@ -33,6 +33,14 @@
     .animate-pulse-heart {
       animation: pulseHeart 1.4s ease-in-out infinite;
     }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+    .animate-shake {
+      animation: shake 0.4s ease-in-out;
+    }
   </style>
 </head>
 <body class="min-h-screen bg-[#faf8f6] flex items-center justify-center p-4 sm:p-6 overflow-hidden relative">
@@ -97,14 +105,15 @@
     <!-- Időpont-egyeztető kártya -->
     <div id="date-card" class="w-full max-w-md bg-white/95 backdrop-blur p-5 sm:p-6 rounded-3xl shadow-xl shadow-stone-200/50 border border-stone-200/80 transition-all duration-300">
       <div id="date-input-section" class="flex flex-col gap-3">
-        <label for="date-picker" class="text-xs font-semibold uppercase tracking-wider text-stone-400 text-left">
-          Válassz egy lehetséges időpontot:
+        <label for="date-picker" class="text-xs font-semibold uppercase tracking-wider text-stone-400 text-left flex justify-between items-center">
+          <span>Válassz egy időpontot:</span>
+          <span class="text-stone-400/80 font-normal lowercase tracking-normal">(max. 3 hét)</span>
         </label>
         <div class="flex flex-col sm:flex-row gap-2">
           <input
             type="datetime-local"
             id="date-picker"
-            class="flex-1 px-4 py-3 rounded-2xl text-stone-800 bg-stone-50 border border-stone-200 focus:outline-none focus:ring-2 focus:ring-rose-400 text-sm font-medium"
+            class="flex-1 px-4 py-3 rounded-2xl text-stone-800 bg-stone-50 border border-stone-200 focus:outline-none focus:ring-2 focus:ring-rose-400 text-sm font-medium transition-all"
           />
           <button
             id="save-date-btn"
@@ -113,6 +122,12 @@
           >
             Mentés 💌
           </button>
+        </div>
+
+        <!-- Aranyos hiba- és figyelmeztető üzenet tároló -->
+        <div id="date-warning" class="hidden items-center justify-center gap-2 p-3 rounded-2xl bg-rose-50 border border-rose-200/80 text-rose-700 text-xs sm:text-sm font-semibold transition-all">
+          <span id="date-warning-icon">🥺</span>
+          <span id="date-warning-text">Ne csináld már, ennyit nem tudok rád várni! ❤️</span>
         </div>
       </div>
 
@@ -145,12 +160,88 @@
     const dateConfirmedSection = document.getElementById('date-confirmed-section');
     const chosenDateDisplay = document.getElementById('chosen-date-display');
     const changeDateBtn = document.getElementById('change-date-btn');
+    const dateWarning = document.getElementById('date-warning');
+    const dateWarningText = document.getElementById('date-warning-text');
+    const dateWarningIcon = document.getElementById('date-warning-icon');
 
-    // Alapértelmezett holnapi dátum a választóba
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    tomorrow.setHours(18, 0, 0, 0);
-    datePicker.value = tomorrow.toISOString().slice(0, 16);
+    // Helyi idő YYYY-MM-DDTHH:mm formázása (a helyes időzóna miatt)
+    function formatToLocalISO(date) {
+      const pad = (n) => String(n).padStart(2, '0');
+      const yyyy = date.getFullYear();
+      const MM = pad(date.getMonth() + 1);
+      const dd = pad(date.getDate());
+      const hh = pad(date.getHours());
+      const mm = pad(date.getMinutes());
+      return `${yyyy}-${MM}-${dd}T${hh}:${mm}`;
+    }
+
+    // Min és Max korlátok:
+    // Min: jelenlegi időpont (visszafelé nem lehet menni)
+    // Max: maximum 3 hét előre (21 nap)
+    function updateDateLimits() {
+      const now = new Date();
+      const maxDate = new Date(now.getTime() + 21 * 24 * 60 * 60 * 1000);
+
+      datePicker.min = formatToLocalISO(now);
+      datePicker.max = formatToLocalISO(maxDate);
+
+      // Alapértelmezett: holnap 18:00
+      if (!datePicker.value) {
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        tomorrow.setHours(18, 0, 0, 0);
+        datePicker.value = formatToLocalISO(tomorrow);
+      }
+    }
+    updateDateLimits();
+
+    function showDateWarning(text, icon = '🥺') {
+      dateWarningText.innerText = text;
+      dateWarningIcon.innerText = icon;
+      dateWarning.classList.remove('hidden');
+      dateWarning.classList.add('flex', 'animate-shake');
+      datePicker.classList.add('border-rose-400', 'ring-2', 'ring-rose-200');
+
+      setTimeout(() => {
+        dateWarning.classList.remove('animate-shake');
+      }, 400);
+    }
+
+    function hideDateWarning() {
+      dateWarning.classList.add('hidden');
+      dateWarning.classList.remove('flex');
+      datePicker.classList.remove('border-rose-400', 'ring-2', 'ring-rose-200');
+    }
+
+    // Dátum ellenőrzése
+    function validateDateSelection() {
+      if (!datePicker.value) {
+        showDateWarning("Kérlek válassz egy időpontot! 😊", "📅");
+        return false;
+      }
+
+      const selected = new Date(datePicker.value);
+      const now = new Date();
+      const maxLimit = new Date(now.getTime() + 21 * 24 * 60 * 60 * 1000);
+
+      // Múltbeli dátum ellenőrzése
+      if (selected < now) {
+        showDateWarning("Időutazni sajnos még nem tudok... válassz egy későbbi időpontot! 😉⏳", "⏳");
+        return false;
+      }
+
+      // 3 hétnél későbbi dátum ellenőrzése
+      if (selected > maxLimit) {
+        showDateWarning("Ne csináld már, ennyit nem tudok rád várni! 🥺❤️", "🥺");
+        return false;
+      }
+
+      hideDateWarning();
+      return true;
+    }
+
+    datePicker.addEventListener('input', validateDateSelection);
+    datePicker.addEventListener('change', validateDateSelection);
 
     const NO_BUTTON_TEXTS = [
       "Nem",
@@ -270,9 +361,11 @@
 
     // Időpont mentése
     saveDateBtn.addEventListener('click', () => {
-      const value = datePicker.value;
-      if (!value) return;
+      if (!validateDateSelection()) {
+        return;
+      }
 
+      const value = datePicker.value;
       const dateObj = new Date(value);
       const formatted = dateObj.toLocaleString('hu-HU', {
         year: 'numeric',
@@ -303,6 +396,8 @@
       dateConfirmedSection.classList.add('hidden');
       dateConfirmedSection.classList.remove('flex');
       dateInputSection.classList.remove('hidden');
+      hideDateWarning();
+      updateDateLimits();
     });
   </script>
 </body>
