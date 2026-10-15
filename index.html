@@ -89,60 +89,188 @@
   </main>
 
   <!-- 2. KÉPERNYŐ: Siker / Elfogadás -->
-  <main id="success-screen" class="hidden relative z-10 w-full max-w-xl text-center flex flex-col items-center justify-center transition-all duration-500 opacity-0 transform scale-95">
-    <div class="text-3xl sm:text-4xl mb-6 tracking-widest select-none animate-bounce">
+  <main id="success-screen" class="hidden relative z-10 w-full max-w-2xl text-center flex flex-col items-center justify-center transition-all duration-500 opacity-0 transform scale-95 px-2">
+    <div class="text-3xl sm:text-4xl mb-4 tracking-widest select-none animate-bounce">
       🤍 ❤️ 🥂 ❤️ 🤍
     </div>
 
-    <h1 class="text-3xl sm:text-5xl font-black text-stone-900 tracking-tight leading-tight mb-4 px-4">
+    <h1 class="text-3xl sm:text-5xl font-black text-stone-900 tracking-tight leading-tight mb-3 px-4">
       Úristen, igent mondtál! Ezt nem hiszem el... 💖
     </h1>
 
-    <p class="text-stone-600 mb-8 max-w-md text-base sm:text-lg px-4">
-      A nap legjobb híre! Már most nagyon várom. Mikor lenne neked a legszuperebb?
+    <p class="text-stone-600 mb-6 max-w-md text-base sm:text-lg px-4">
+      A nap legjobb híre! Válassz egy szimpatikus randi programot és egy jó időpontot:
     </p>
 
-    <!-- Időpont-egyeztető kártya -->
-    <div id="date-card" class="w-full max-w-md bg-white/95 backdrop-blur p-5 sm:p-6 rounded-3xl shadow-xl shadow-stone-200/50 border border-stone-200/80 transition-all duration-300">
-      <div id="date-input-section" class="flex flex-col gap-3">
-        <label for="date-picker" class="text-xs font-semibold uppercase tracking-wider text-stone-400 text-left flex justify-between items-center">
-          <span>Válassz egy időpontot:</span>
-          <span class="text-stone-400/80 font-normal lowercase tracking-normal">(minél előbb, annál jobb 😉)</span>
-        </label>
-        <div class="flex flex-col sm:flex-row gap-2">
+    <!-- Időpont- és program-egyeztető kártya -->
+    <div id="date-card" class="w-full max-w-xl bg-white/95 backdrop-blur p-5 sm:p-7 rounded-3xl shadow-xl shadow-stone-200/50 border border-stone-200/80 transition-all duration-300">
+      <div id="date-input-section" class="flex flex-col gap-5">
+        
+        <!-- Helyszín / Program választás -->
+        <div class="flex flex-col gap-2.5 text-left">
+          <label class="text-xs font-semibold uppercase tracking-wider text-stone-400 flex items-center justify-between">
+            <span>1. Milyen programhoz lenne a legnagyobb kedved?</span>
+            <span class="text-stone-400 font-normal lowercase tracking-normal text-[11px]">(kattints a választáshoz)</span>
+          </label>
+          <div id="activity-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <!-- 1. Körös-parti séta -->
+            <button
+              type="button"
+              class="activity-card group text-left p-3.5 rounded-2xl border-2 border-[#b83852] bg-rose-50/60 ring-2 ring-rose-200 shadow-sm transition-all duration-200 cursor-pointer flex items-center gap-3 relative"
+              data-activity="Romantikus Körös-parti séta"
+            >
+              <div class="w-10 h-10 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-xl shrink-0 group-hover:scale-110 transition-transform">
+                🌊
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="font-bold text-stone-800 text-sm">Körös-parti séta</div>
+                <div class="text-xs text-stone-500 truncate">Vízparti andalgás és beszélgetés</div>
+              </div>
+              <div class="check-icon flex w-5 h-5 rounded-full bg-[#b83852] text-white items-center justify-center text-xs shrink-0">
+                ✓
+              </div>
+            </button>
+
+            <!-- 2. Naplementés piknik -->
+            <button
+              type="button"
+              class="activity-card group text-left p-3.5 rounded-2xl border border-stone-200 bg-white hover:border-rose-300 hover:bg-rose-50/30 transition-all duration-200 cursor-pointer flex items-center gap-3 relative"
+              data-activity="Meghitt naplementés piknik randi"
+            >
+              <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl shrink-0 group-hover:scale-110 transition-transform">
+                🧺
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="font-bold text-stone-800 text-sm">Naplementés piknik</div>
+                <div class="text-xs text-stone-500 truncate">Pokróc és finomságok az aranyórában</div>
+              </div>
+              <div class="check-icon hidden w-5 h-5 rounded-full bg-[#b83852] text-white items-center justify-center text-xs shrink-0">
+                ✓
+              </div>
+            </button>
+
+            <!-- 3. Romantikus vacsora -->
+            <button
+              type="button"
+              class="activity-card group text-left p-3.5 rounded-2xl border border-stone-200 bg-white hover:border-rose-300 hover:bg-rose-50/30 transition-all duration-200 cursor-pointer flex items-center gap-3 relative"
+              data-activity="Egy romantikus vacsora"
+            >
+              <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center text-xl shrink-0 group-hover:scale-110 transition-transform">
+                🍝
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="font-bold text-stone-800 text-sm">Romantikus vacsora</div>
+                <div class="text-xs text-stone-500 truncate">Gyertyafény és finom falatok</div>
+              </div>
+              <div class="check-icon hidden w-5 h-5 rounded-full bg-[#b83852] text-white items-center justify-center text-xs shrink-0">
+                ✓
+              </div>
+            </button>
+
+            <!-- 4. Izgalmas bowlingozás -->
+            <button
+              type="button"
+              class="activity-card group text-left p-3.5 rounded-2xl border border-stone-200 bg-white hover:border-rose-300 hover:bg-rose-50/30 transition-all duration-200 cursor-pointer flex items-center gap-3 relative"
+              data-activity="Izgalmas bowlingozás"
+            >
+              <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl shrink-0 group-hover:scale-110 transition-transform">
+                🎳
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="font-bold text-stone-800 text-sm">Bowling randi</div>
+                <div class="text-xs text-stone-500 truncate">Játékos versengés és nevetés</div>
+              </div>
+              <div class="check-icon hidden w-5 h-5 rounded-full bg-[#b83852] text-white items-center justify-center text-xs shrink-0">
+                ✓
+              </div>
+            </button>
+
+            <!-- 5. Laza kávézás (sm:col-span-2) -->
+            <button
+              type="button"
+              class="activity-card sm:col-span-2 group text-left p-3.5 rounded-2xl border border-stone-200 bg-white hover:border-rose-300 hover:bg-rose-50/30 transition-all duration-200 cursor-pointer flex items-center gap-3 relative"
+              data-activity="Laza kávézás"
+            >
+              <div class="w-10 h-10 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center text-xl shrink-0 group-hover:scale-110 transition-transform">
+                ☕
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="font-bold text-stone-800 text-sm">Laza kávézás</div>
+                <div class="text-xs text-stone-500 truncate">Finom kávé, süti és kötetlen csevegés</div>
+              </div>
+              <div class="check-icon hidden w-5 h-5 rounded-full bg-[#b83852] text-white items-center justify-center text-xs shrink-0">
+                ✓
+              </div>
+            </button>
+          </div>
+
+          <!-- Opcionális egyéb kívánság / megjegyzés -->
           <input
-            type="datetime-local"
-            id="date-picker"
-            class="flex-1 px-4 py-3 rounded-2xl text-stone-800 bg-stone-50 border border-stone-200 focus:outline-none focus:ring-2 focus:ring-rose-400 text-sm font-medium transition-all"
+            type="text"
+            id="custom-note"
+            placeholder="Van egyéb kívánságod vagy ötleted? (nem kötelező)"
+            class="w-full mt-1 px-4 py-2.5 rounded-xl text-stone-700 bg-stone-50/80 border border-stone-200 focus:outline-none focus:ring-2 focus:ring-rose-300 text-xs sm:text-sm placeholder-stone-400"
           />
-          <button
-            id="save-date-btn"
-            type="button"
-            class="px-6 py-3 rounded-2xl bg-[#b83852] hover:bg-[#a12f46] text-white font-semibold text-sm transition-all shadow-md shadow-rose-900/10 cursor-pointer"
-          >
-            Mentés 💌
-          </button>
         </div>
 
-        <!-- Aranyos hiba- és figyelmeztető üzenet tároló -->
-        <div id="date-warning" class="hidden items-center justify-center gap-2 p-3 rounded-2xl bg-rose-50 border border-rose-200/80 text-rose-700 text-xs sm:text-sm font-semibold transition-all">
-          <span id="date-warning-icon">🥺</span>
-          <span id="date-warning-text">Ne csináld már, ennyit nem tudok rád várni! ❤️</span>
+        <!-- Időpont választó -->
+        <div class="flex flex-col gap-2.5 text-left">
+          <label for="date-picker" class="text-xs font-semibold uppercase tracking-wider text-stone-400 flex justify-between items-center">
+            <span>2. Mikor lenne a legszuperebb?</span>
+            <span class="text-stone-400/80 font-normal lowercase tracking-normal">(minél előbb, annál jobb 😉)</span>
+          </label>
+          <div class="flex flex-col sm:flex-row gap-2">
+            <input
+              type="datetime-local"
+              id="date-picker"
+              class="flex-1 px-4 py-3 rounded-2xl text-stone-800 bg-stone-50 border border-stone-200 focus:outline-none focus:ring-2 focus:ring-rose-400 text-sm font-medium transition-all"
+            />
+            <button
+              id="save-date-btn"
+              type="button"
+              class="px-7 py-3 rounded-2xl bg-[#b83852] hover:bg-[#a12f46] text-white font-semibold text-sm transition-all shadow-md shadow-rose-900/10 cursor-pointer whitespace-nowrap"
+            >
+              Randi megerősítése 💌
+            </button>
+          </div>
+
+          <!-- Aranyos hiba- és figyelmeztető üzenet tároló -->
+          <div id="date-warning" class="hidden items-center justify-center gap-2 p-3 rounded-2xl bg-rose-50 border border-rose-200/80 text-rose-700 text-xs sm:text-sm font-semibold transition-all mt-1">
+            <span id="date-warning-icon">🥺</span>
+            <span id="date-warning-text">Ne csináld már, ennyit nem tudok rád várni! ❤️</span>
+          </div>
         </div>
+
       </div>
 
-      <div id="date-confirmed-section" class="hidden flex-col items-center gap-2 py-3 text-rose-900">
-        <div class="text-3xl">🎉</div>
-        <p class="font-bold text-lg">Már be is írtam a naptárba!</p>
-        <p class="text-sm text-stone-600">
-          Megbeszélt időpont: <span id="chosen-date-display" class="font-semibold text-stone-900"></span>
-        </p>
+      <!-- Megerősített állapot -->
+      <div id="date-confirmed-section" class="hidden flex-col items-center gap-3 py-4 text-rose-900">
+        <div class="text-4xl animate-bounce">🎉</div>
+        <p class="font-bold text-xl text-stone-900">Már be is írtam a naptárba!</p>
+
+        <div class="w-full bg-rose-50/70 border border-rose-200/70 rounded-2xl p-4 text-left flex flex-col gap-2.5 mt-1">
+          <div class="flex items-start gap-2.5 text-stone-700 text-sm">
+            <span class="text-base shrink-0 mt-0.5">📍</span>
+            <div>
+              <span class="text-xs text-stone-500 uppercase font-semibold block">Választott program:</span>
+              <span id="chosen-activity-display" class="font-bold text-stone-900"></span>
+            </div>
+          </div>
+          <div class="flex items-start gap-2.5 text-stone-700 text-sm">
+            <span class="text-base shrink-0 mt-0.5">📅</span>
+            <div>
+              <span class="text-xs text-stone-500 uppercase font-semibold block">Időpont:</span>
+              <span id="chosen-date-display" class="font-bold text-stone-900"></span>
+            </div>
+          </div>
+        </div>
+
         <button 
           id="change-date-btn"
           type="button"
-          class="mt-3 text-xs text-stone-400 hover:text-stone-600 underline cursor-pointer"
+          class="mt-2 text-xs text-stone-400 hover:text-stone-600 underline cursor-pointer"
         >
-          Időpont módosítása
+          Időpont vagy program módosítása
         </button>
       </div>
     </div>
@@ -159,6 +287,36 @@
     const dateInputSection = document.getElementById('date-input-section');
     const dateConfirmedSection = document.getElementById('date-confirmed-section');
     const chosenDateDisplay = document.getElementById('chosen-date-display');
+    const chosenActivityDisplay = document.getElementById('chosen-activity-display');
+    const customNoteInput = document.getElementById('custom-note');
+    const activityCards = document.querySelectorAll('.activity-card');
+    let selectedActivity = 'Romantikus Körös-parti séta';
+
+    // Program kártyák kiválasztásának kezelése
+    activityCards.forEach(card => {
+      card.addEventListener('click', () => {
+        activityCards.forEach(c => {
+          c.classList.remove('border-2', 'border-[#b83852]', 'bg-rose-50/60', 'ring-2', 'ring-rose-200', 'shadow-sm');
+          c.classList.add('border-stone-200', 'bg-white');
+          const icon = c.querySelector('.check-icon');
+          if (icon) {
+            icon.classList.remove('flex');
+            icon.classList.add('hidden');
+          }
+        });
+
+        card.classList.remove('border-stone-200', 'bg-white');
+        card.classList.add('border-2', 'border-[#b83852]', 'bg-rose-50/60', 'ring-2', 'ring-rose-200', 'shadow-sm');
+        const icon = card.querySelector('.check-icon');
+        if (icon) {
+          icon.classList.remove('hidden');
+          icon.classList.add('flex');
+        }
+
+        selectedActivity = card.getAttribute('data-activity');
+      });
+    });
+
     const changeDateBtn = document.getElementById('change-date-btn');
     const dateWarning = document.getElementById('date-warning');
     const dateWarningText = document.getElementById('date-warning-text');
@@ -360,7 +518,7 @@
       }, 400);
     });
 
-    // Időpont mentése
+    // Időpont és program mentése
     saveDateBtn.addEventListener('click', () => {
       if (!validateDateSelection()) {
         return;
@@ -377,7 +535,12 @@
         minute: '2-digit'
       });
 
+      const customNote = customNoteInput ? customNoteInput.value.trim() : '';
+      const displayActivity = customNote ? `${selectedActivity} ✨ "${customNote}"` : selectedActivity;
+
+      chosenActivityDisplay.innerText = displayActivity;
       chosenDateDisplay.innerText = formatted;
+
       dateInputSection.classList.add('hidden');
       dateConfirmedSection.classList.remove('hidden');
       dateConfirmedSection.classList.add('flex');
@@ -385,14 +548,14 @@
       // Extra kis konfetti burst a megerősítésnél
       if (typeof confetti === 'function') {
         confetti({
-          particleCount: 50,
-          spread: 60,
-          origin: { y: 0.75 }
+          particleCount: 65,
+          spread: 70,
+          origin: { y: 0.7 }
         });
       }
     });
 
-    // Időpont módosítása gomb
+    // Időpont és program módosítása gomb
     changeDateBtn.addEventListener('click', () => {
       dateConfirmedSection.classList.add('hidden');
       dateConfirmedSection.classList.remove('flex');
