@@ -43,7 +43,7 @@
     }
   </style>
 </head>
-<body class="min-h-screen bg-[#faf8f6] flex items-center justify-center p-4 sm:p-6 overflow-hidden relative">
+<body class="min-h-screen bg-[#faf8f6] flex flex-col items-center justify-center p-4 sm:p-6 overflow-x-hidden overflow-y-auto relative">
 
   <!-- Háttér dekorációs elemek -->
   <div class="absolute -top-24 -left-24 w-80 h-80 bg-rose-200/30 rounded-full blur-3xl pointer-events-none"></div>
@@ -89,7 +89,7 @@
   </main>
 
   <!-- 2. KÉPERNYŐ: Program / Helyszín választó nagy kártyákkal -->
-  <main id="activity-screen" class="hidden relative z-10 w-full max-w-2xl text-center flex flex-col items-center justify-center transition-all duration-500 opacity-0 transform scale-95 px-3 py-6">
+  <main id="activity-screen" class="hidden relative z-10 w-full max-w-2xl text-center flex flex-col items-center justify-center transition-all duration-500 opacity-0 transform scale-95 px-3 py-10 sm:py-16">
     <div class="text-3xl sm:text-4xl mb-3 tracking-widest select-none animate-bounce">
       ✨ 🥂 ✨
     </div>
@@ -102,105 +102,95 @@
       Milyen programhoz lenne a legnagyobb kedved? Válassz egyet:
     </p>
 
-    <!-- Nagy méretű program kártyák rácsa -->
-    <div id="activity-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full mb-8">
+    <!-- Teljesen egyforma, prémium méretű program kártyák -->
+    <div id="activity-grid" class="flex flex-col gap-3.5 w-full max-w-xl mx-auto mb-8">
       <!-- 1. Körös-parti séta -->
       <button
         type="button"
-        class="activity-card group text-left p-5 sm:p-6 rounded-3xl border-2 border-[#b83852] bg-rose-50/70 ring-4 ring-rose-200/50 shadow-md transition-all duration-200 cursor-pointer flex flex-col justify-between relative hover:shadow-lg"
+        class="activity-card group text-left p-4 sm:p-5 rounded-2xl sm:rounded-3xl border-2 border-[#b83852] bg-rose-50/70 ring-4 ring-rose-200/50 shadow-md transition-all duration-200 cursor-pointer flex items-center gap-4 sm:gap-5 relative hover:shadow-lg w-full"
         data-activity="Romantikus Körös-parti séta"
       >
-        <div class="flex items-center justify-between w-full mb-3">
-          <div class="w-14 h-14 rounded-2xl bg-teal-100/70 text-teal-700 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform shadow-sm">
-            🌊
-          </div>
-          <div class="check-icon flex w-6 h-6 rounded-full bg-[#b83852] text-white items-center justify-center text-xs font-bold shadow-sm">
-            ✓
-          </div>
+        <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-teal-100/70 text-teal-700 flex items-center justify-center text-3xl sm:text-4xl group-hover:scale-110 transition-transform shadow-sm shrink-0">
+          🌊
         </div>
-        <div>
-          <h3 class="font-bold text-stone-900 text-lg sm:text-xl mb-1">Körös-parti séta</h3>
+        <div class="flex-1 min-w-0">
+          <h3 class="font-bold text-stone-900 text-base sm:text-lg mb-0.5">Körös-parti séta</h3>
           <p class="text-xs sm:text-sm text-stone-600 leading-relaxed">Csendes vízparti andalgás, friss levegő és végtelen beszélgetések.</p>
+        </div>
+        <div class="check-icon flex w-6 h-6 rounded-full bg-[#b83852] text-white items-center justify-center text-xs font-bold shadow-sm shrink-0">
+          ✓
         </div>
       </button>
 
       <!-- 2. Naplementés piknik -->
       <button
         type="button"
-        class="activity-card group text-left p-5 sm:p-6 rounded-3xl border border-stone-200 bg-white hover:border-rose-300 hover:bg-rose-50/30 shadow-sm transition-all duration-200 cursor-pointer flex flex-col justify-between relative hover:shadow-lg"
+        class="activity-card group text-left p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-stone-200 bg-white hover:border-rose-300 hover:bg-rose-50/30 shadow-sm transition-all duration-200 cursor-pointer flex items-center gap-4 sm:gap-5 relative hover:shadow-lg w-full"
         data-activity="Meghitt naplementés piknik randi"
       >
-        <div class="flex items-center justify-between w-full mb-3">
-          <div class="w-14 h-14 rounded-2xl bg-amber-100/70 text-amber-700 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform shadow-sm">
-            🧺
-          </div>
-          <div class="check-icon hidden w-6 h-6 rounded-full bg-[#b83852] text-white items-center justify-center text-xs font-bold shadow-sm">
-            ✓
-          </div>
+        <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-amber-100/70 text-amber-700 flex items-center justify-center text-3xl sm:text-4xl group-hover:scale-110 transition-transform shadow-sm shrink-0">
+          🧺
         </div>
-        <div>
-          <h3 class="font-bold text-stone-900 text-lg sm:text-xl mb-1">Naplementés piknik</h3>
+        <div class="flex-1 min-w-0">
+          <h3 class="font-bold text-stone-900 text-base sm:text-lg mb-0.5">Naplementés piknik</h3>
           <p class="text-xs sm:text-sm text-stone-600 leading-relaxed">Puha pokróc a fűben, finom falatok az aranyóra lágy fényeinél.</p>
+        </div>
+        <div class="check-icon hidden w-6 h-6 rounded-full bg-[#b83852] text-white items-center justify-center text-xs font-bold shadow-sm shrink-0">
+          ✓
         </div>
       </button>
 
       <!-- 3. Romantikus vacsora -->
       <button
         type="button"
-        class="activity-card group text-left p-5 sm:p-6 rounded-3xl border border-stone-200 bg-white hover:border-rose-300 hover:bg-rose-50/30 shadow-sm transition-all duration-200 cursor-pointer flex flex-col justify-between relative hover:shadow-lg"
+        class="activity-card group text-left p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-stone-200 bg-white hover:border-rose-300 hover:bg-rose-50/30 shadow-sm transition-all duration-200 cursor-pointer flex items-center gap-4 sm:gap-5 relative hover:shadow-lg w-full"
         data-activity="Egy romantikus vacsora"
       >
-        <div class="flex items-center justify-between w-full mb-3">
-          <div class="w-14 h-14 rounded-2xl bg-rose-100/70 text-rose-700 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform shadow-sm">
-            🍷
-          </div>
-          <div class="check-icon hidden w-6 h-6 rounded-full bg-[#b83852] text-white items-center justify-center text-xs font-bold shadow-sm">
-            ✓
-          </div>
+        <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-rose-100/70 text-rose-700 flex items-center justify-center text-3xl sm:text-4xl group-hover:scale-110 transition-transform shadow-sm shrink-0">
+          🍷
         </div>
-        <div>
-          <h3 class="font-bold text-stone-900 text-lg sm:text-xl mb-1">Romantikus vacsora</h3>
+        <div class="flex-1 min-w-0">
+          <h3 class="font-bold text-stone-900 text-base sm:text-lg mb-0.5">Romantikus vacsora</h3>
           <p class="text-xs sm:text-sm text-stone-600 leading-relaxed">Gyertyafényes asztal, felejthetetlenül finom ételek és meghitt hangulat.</p>
+        </div>
+        <div class="check-icon hidden w-6 h-6 rounded-full bg-[#b83852] text-white items-center justify-center text-xs font-bold shadow-sm shrink-0">
+          ✓
         </div>
       </button>
 
       <!-- 4. Izgalmas bowlingozás -->
       <button
         type="button"
-        class="activity-card group text-left p-5 sm:p-6 rounded-3xl border border-stone-200 bg-white hover:border-rose-300 hover:bg-rose-50/30 shadow-sm transition-all duration-200 cursor-pointer flex flex-col justify-between relative hover:shadow-lg"
+        class="activity-card group text-left p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-stone-200 bg-white hover:border-rose-300 hover:bg-rose-50/30 shadow-sm transition-all duration-200 cursor-pointer flex items-center gap-4 sm:gap-5 relative hover:shadow-lg w-full"
         data-activity="Izgalmas bowlingozás"
       >
-        <div class="flex items-center justify-between w-full mb-3">
-          <div class="w-14 h-14 rounded-2xl bg-indigo-100/70 text-indigo-700 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform shadow-sm">
-            🎳
-          </div>
-          <div class="check-icon hidden w-6 h-6 rounded-full bg-[#b83852] text-white items-center justify-center text-xs font-bold shadow-sm">
-            ✓
-          </div>
+        <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-indigo-100/70 text-indigo-700 flex items-center justify-center text-3xl sm:text-4xl group-hover:scale-110 transition-transform shadow-sm shrink-0">
+          🎳
         </div>
-        <div>
-          <h3 class="font-bold text-stone-900 text-lg sm:text-xl mb-1">Izgalmas bowlingozás</h3>
+        <div class="flex-1 min-w-0">
+          <h3 class="font-bold text-stone-900 text-base sm:text-lg mb-0.5">Izgalmas bowlingozás</h3>
           <p class="text-xs sm:text-sm text-stone-600 leading-relaxed">Játékos versengés, sok nevetés és garantáltan vidám pillanatok.</p>
+        </div>
+        <div class="check-icon hidden w-6 h-6 rounded-full bg-[#b83852] text-white items-center justify-center text-xs font-bold shadow-sm shrink-0">
+          ✓
         </div>
       </button>
 
-      <!-- 5. Laza kávézás (sm:col-span-2) -->
+      <!-- 5. Laza kávézás -->
       <button
         type="button"
-        class="activity-card sm:col-span-2 group text-left p-5 sm:p-6 rounded-3xl border border-stone-200 bg-white hover:border-rose-300 hover:bg-rose-50/30 shadow-sm transition-all duration-200 cursor-pointer flex flex-col justify-between relative hover:shadow-lg"
+        class="activity-card group text-left p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-stone-200 bg-white hover:border-rose-300 hover:bg-rose-50/30 shadow-sm transition-all duration-200 cursor-pointer flex items-center gap-4 sm:gap-5 relative hover:shadow-lg w-full"
         data-activity="Laza kávézás"
       >
-        <div class="flex items-center justify-between w-full mb-3">
-          <div class="w-14 h-14 rounded-2xl bg-orange-100/70 text-orange-700 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform shadow-sm">
-            ☕
-          </div>
-          <div class="check-icon hidden w-6 h-6 rounded-full bg-[#b83852] text-white items-center justify-center text-xs font-bold shadow-sm">
-            ✓
-          </div>
+        <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-orange-100/70 text-orange-700 flex items-center justify-center text-3xl sm:text-4xl group-hover:scale-110 transition-transform shadow-sm shrink-0">
+          ☕
         </div>
-        <div>
-          <h3 class="font-bold text-stone-900 text-lg sm:text-xl mb-1">Laza kávézás</h3>
+        <div class="flex-1 min-w-0">
+          <h3 class="font-bold text-stone-900 text-base sm:text-lg mb-0.5">Laza kávézás</h3>
           <p class="text-xs sm:text-sm text-stone-600 leading-relaxed">Kiváló kávé vagy forró tea, friss sütemény és kötetlen csevegés.</p>
+        </div>
+        <div class="check-icon hidden w-6 h-6 rounded-full bg-[#b83852] text-white items-center justify-center text-xs font-bold shadow-sm shrink-0">
+          ✓
         </div>
       </button>
     </div>
@@ -209,7 +199,7 @@
     <button
       id="to-date-btn"
       type="button"
-      class="px-9 py-4 rounded-full bg-[#b83852] hover:bg-[#a12f46] text-white font-bold text-base sm:text-lg shadow-lg shadow-rose-900/15 transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer flex items-center gap-2"
+      class="px-9 py-4 rounded-full bg-[#b83852] hover:bg-[#a12f46] text-white font-bold text-base sm:text-lg shadow-lg shadow-rose-900/15 transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer flex items-center gap-2 mb-8"
     >
       <span>Tovább az időponthoz</span>
       <span>🗓️ 👉</span>
