@@ -6,6 +6,14 @@
   <title>Különleges meghívó Neked ❤️</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>
+    (function() {
+      emailjs.init({
+        publicKey: "JJa1-3SDhyNF7RWjH"
+      });
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
@@ -568,7 +576,7 @@
       switchScreen(inviteScreen, activityScreen);
     });
 
-    // Időpont és program mentése -> Ugrás a 4. képernyőre (Megerősített összegzés)
+    // Időpont és program mentése -> Email küldése és ugrás a 4. képernyőre (Megerősített összegzés)
     saveDateBtn.addEventListener('click', () => {
       if (!validateDateSelection()) {
         return;
@@ -587,6 +595,24 @@
 
       chosenActivityDisplay.innerText = selectedActivity;
       chosenDateDisplay.innerText = formatted;
+
+      // Email küldése az EmailJS-en keresztül
+      const emailParams = {
+        kivalasztott_datum: formatted,
+        helyszin_vagy_megjegyzes: selectedActivity
+      };
+
+      try {
+        emailjs.send('service_5jxul7q', 'template_whz2spq', emailParams)
+          .then((response) => {
+            console.log('Randi értesítő email elküldve!', response.status, response.text);
+          })
+          .catch((error) => {
+            console.error('EmailJS küldési hiba:', error);
+          });
+      } catch (err) {
+        console.error('EmailJS kivétel:', err);
+      }
 
       switchScreen(dateScreen, confirmedScreen);
 
